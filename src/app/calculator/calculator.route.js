@@ -4,12 +4,11 @@
         .module('app.calculator')
         .config(function($stateProvider, $urlRouterProvider) {
             $stateProvider
-                .state('calculator', {
+                .state('app.calculator', {
                     url: '/calculator',
                     templateUrl: 'app/calculator/view.html',
                     controller: 'CalculatorController',
                     controllerAs: 'calc'
                 })
-            $urlRouterProvider.otherwise('/calculator');
         })
 })();

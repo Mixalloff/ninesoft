@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="app/comments/styles.css">
+
+<md-content class="main-container section" layout="column">
+    <section class="comments section" layout="column">
+        <ul class="comments__list">
+            <li class="comments__list__item" ng-repeat="comment in com.comments" layout>
+                <md-button aria-label="Delete" flex=10 ng-click="com.deleteComment(comment)"> Delete </md-button>
+                <span flex>{{ comment.text }}</span>
+            </li>
+        </ul>
+    </section>
+</md-content>

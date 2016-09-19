@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="/build/css/ninesoft.css">
 </head>
 
-  <body ng-app="app" ng-cloak class="main-background">
+<body ng-app="app" ng-cloak class="main-background">
+  <md-button aria-label="Калькулятор" ui-sref="app.calculator"> Калькулятор </md-button>
+  <md-button aria-label="Комментарии" ui-sref="app.comments"> Комментарии </md-button>
   <ui-view layout="column"></ui-view>
 </body>
 </html>
