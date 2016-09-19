@@ -7,78 +7,95 @@
     function calculatorController($scope) {
         var vm = this;
         vm.operations = config.operations;
+        vm.usedOperations = [];
         vm.result = {};
         vm.fractions = [
             { dividend: 0, divider: 0 },
             { dividend: 0, divider: 0 },
-        ]
+        ];
 
         vm.calculate = calculate;
         vm.isCorrectFractions = isCorrectFractions;
+        vm.onOperationChange = onOperationChange;
+        vm.addNewFraction = addNewFraction;
 
         function calculate() {
             if (!isCorrectFractions()) {
                 return;
-            }
-            var fract1 = vm.fractions[0];
-            var fract2 = vm.fractions[1];       
-            switch(vm.operation.label) {
-                case '+': { addFractions(fract1, fract2); break; }
-                case '-': { substractFractions(fract1, fract2); break; }
-                case '*': { multFractions(fract1, fract2); break; }
-                case '/': { divideFractions(fract1, fract2); break; }
-            }
-            simplifyFraction();
+            } 
+            vm.result = vm.fractions.reduce(function(prev, current, index, arr) {
+                switch(vm.usedOperations[index-1].label) {
+                    case '+': { return addFractions(prev, current);}
+                    case '-': { return substractFractions(prev, current); }
+                    case '*': { return multFractions(prev, current);}
+                    case '/': { return divideFractions(prev, current); }
+                }
+            }); 
+            vm.result = simplifyFraction(vm.result);
         }
 
         function addFractions(fraction1, fraction2) {
-            vm.result.dividend = fraction1.dividend * fraction2.divider + fraction2.dividend * fraction1.divider;
-            vm.result.divider = fraction1.divider * fraction2.divider;
+            var fraction = {
+                dividend: fraction1.dividend * fraction2.divider + fraction2.dividend * fraction1.divider,
+                divider: fraction1.divider * fraction2.divider
+            }
+            return simplifyFraction(fraction);
         }
         function substractFractions(fraction1, fraction2) {
-            vm.result.dividend = fraction1.dividend * fraction2.divider - fraction2.dividend * fraction1.divider;
-            vm.result.divider = fraction1.divider * fraction2.divider;
+            var fraction = {
+                dividend: fraction1.dividend * fraction2.divider - fraction2.dividend * fraction1.divider,
+                divider: fraction1.divider * fraction2.divider
+            }
+            return simplifyFraction(fraction);
         }
         function multFractions(fraction1, fraction2) {
-            vm.result.dividend = fraction1.dividend * fraction2.dividend;
-            vm.result.divider = fraction1.divider * fraction2.divider;
+            var fraction = {
+                dividend: fraction1.dividend * fraction2.dividend,
+                divider: fraction1.divider * fraction2.divider
+            }
+            return simplifyFraction(fraction);
         }
         function divideFractions(fraction1, fraction2) {
-            vm.result.dividend = fraction1.dividend * fraction2.divider;
-            vm.result.divider = fraction1.divider * fraction2.dividend;
+            var fraction = {
+                dividend: fraction1.dividend * fraction2.divider,
+                divider: fraction1.divider * fraction2.dividend
+            }
+            return simplifyFraction(fraction);
         }
 
-        function simplifyFraction() {
-            var min = Math.min(vm.result.dividend, vm.result.divider);
+        function simplifyFraction(fraction) {
+            if (Math.max(fraction.dividend,fraction.divider) % Math.min(fraction.dividend,fraction.divider) == 0) {
+                return { 
+                    dividend: fraction.dividend / Math.min(fraction.dividend,fraction.divider),
+                    divider: fraction.divider / Math.min(fraction.dividend,fraction.divider)
+                };
+            }
+            
+            var min = Math.min(fraction.dividend, fraction.divider);
             for (var i = 2; i <= min / 2; i++) {
-                if (!(vm.result.dividend % i) && !(vm.result.divider % i)) {
-                    vm.result.dividend /= i;
-                    vm.result.divider /= i;
-                    simplifyFraction();
-                    return;
+                if (!(fraction.dividend % i) && !(fraction.divider % i)) {
+                    fraction.dividend /= i;
+                    fraction.divider /= i;
+                    return simplifyFraction(fraction);
                 }
             }
+            return fraction;
         }
 
-        function isCorrectFractions() {
-            var fract1 = vm.fractions[0];
-            var fract2 = vm.fractions[1];   
-            if (!vm.operation) return false; 
-            if (!vm.fractions[0].divider || !vm.fractions[1].divider) {
-                console.warn('Делитель не может быть нулем или неопределен');
-                return false;
-            }
-            if (
-                    vm.fractions[0].divider === undefined || 
-                    vm.fractions[0].dividend === undefined ||
-                    vm.fractions[1].divider === undefined || 
-                    vm.fractions[1].dividend === undefined
-                ) {
-                console.warn('Заполните дроби');
-                return false;
-            }    
-            return true;
-            
+        function isCorrectFractions() { 
+            if (vm.usedOperations.length  != vm.fractions.length - 1) return false; 
+            return vm.fractions.every(function(elem) {
+                return elem.divider && elem.dividend !== undefined;
+            });
+        }
+
+        function onOperationChange(op, index) {
+            vm.usedOperations[index] = op;
+            vm.calculate();
+        }
+
+        function addNewFraction() {
+            vm.fractions.push({ dividend: 0, divider: 0 });
         }
     }
 
