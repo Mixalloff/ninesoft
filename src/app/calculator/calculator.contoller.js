@@ -31,7 +31,14 @@
                     case '/': { return divideFractions(prev, current); }
                 }
             }); 
-            vm.result = simplifyFraction(vm.result);
+            vm.result = setSign(simplifyFraction(vm.result));
+        }
+
+        function setSign(fraction) {
+            fraction.isNegative = fraction.dividend * fraction.divider < 0;
+            fraction.dividend = Math.abs(fraction.dividend);
+            fraction.divider = Math.abs(fraction.divider);
+            return fraction;
         }
 
         function addFractions(fraction1, fraction2) {

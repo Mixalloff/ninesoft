@@ -1,3 +1,7 @@
+md-divider {
+    width: 100%;
+}
+
 .fraction {
     max-width: 200px;
 }
@@ -9,13 +13,20 @@
     max-width: 80%;
 }
 
-.operation {
+.operation-container {
     padding: 20px;
     display: flex;
     align-items: center;
 }
 
-.equal-sign {
+.operation {
     font-weight: bold;
     font-size: 2em;
+    text-align: center;
+}
+
+.result-fraction {
+    font-size: 2em;
+    align-items: center;
+    justify-content: center;
 }
