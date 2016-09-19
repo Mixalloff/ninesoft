@@ -1,0 +1,25 @@
+.section {
+    padding: 100px
+}
+
+.fraction {
+    max-width: 200px;
+}
+.fraction__item-container {
+    justify-content: center;
+    display: flex;
+}
+.fraction__item-container__item {
+    max-width: 80%;
+}
+
+.operation {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.equal-sign {
+    font-weight: bold;
+    font-size: 2em;
+}

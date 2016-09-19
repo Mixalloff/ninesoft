@@ -1,0 +1,93 @@
+<link rel="stylesheet" href="app/calculator/styles.css">
+
+<md-content class="main-container section" layout="column">
+    <section class="calculator section" layout>
+        <div class="fraction" flex layout="column">
+            <md-input-container class="fraction__item-container">
+               <input class="fraction__item-container__item"
+                      name="firstDividend"
+                      type="number"
+                      ng-model="calc.fractions[0].dividend" 
+                      required 
+                      minlength="0"
+                      placeholder="Делимое"
+                      aria-label="firstDividend"
+                      ng-change="calc.calculate()">
+            </md-input-container>
+            <md-divider></md-divider>
+            <md-input-container class="fraction__item-container">
+               <input class="fraction__item-container__item"
+                      name="firstDivider"
+                      type="number"
+                      ng-model="calc.fractions[0].divider" 
+                      required 
+                      minlength="0"
+                      placeholder="Делитель"
+                      aria-label="firstDivider"
+                      ng-change="calc.calculate()">
+            </md-input-container>
+        </div>
+        <div class="operation">
+            <md-select ng-model="calc.operation" 
+                       placeholder="Операция"
+                       ng-change="calc.calculate()">
+                <md-option ng-value="operation" ng-repeat="operation in calc.operations">
+                    {{ operation.label }}
+                </md-option>
+            </md-select>
+        </div>
+        <div class="fraction" flex layout="column">
+            <md-input-container class="fraction__item-container">
+               <input class="fraction__item-container__item"
+                      name="secondDividend"
+                      type="number"
+                      ng-model="calc.fractions[1].dividend" 
+                      required 
+                      minlength="0"
+                      placeholder="Делимое"
+                      aria-label="secondDividend"
+                      ng-change="calc.calculate()">
+            </md-input-container>
+            <md-divider></md-divider>
+            <md-input-container class="fraction__item-container">
+               <input class="fraction__item-container__item"
+                      name="secondDivider"
+                      type="number"
+                      ng-model="calc.fractions[1].divider" 
+                      required 
+                      minlength="0"
+                      placeholder="Делитель"
+                      aria-label="secondDivider"
+                      ng-change="calc.calculate()">
+            </md-input-container>
+        </div>
+        <div class="equal-sign operation">
+            <span class="equal-sign__label">=</span>
+        </div>
+        <div class="fraction" flex layout="column" ng-show="calc.isCorrectFractions()">
+            <md-input-container class="fraction__item-container">
+               <input class="fraction__item-container__item"
+                      name="resultDividend"
+                      type="number"
+                      ng-model="calc.result.dividend" 
+                      required 
+                      minlength="0"
+                      placeholder="Делимое"
+                      aria-label="resultDividend">
+            </md-input-container>
+            <md-divider></md-divider>
+            <md-input-container class="fraction__item-container">
+               <input class="fraction__item-container__item"
+                      name="resultDivider"
+                      type="number"
+                      ng-model="calc.result.divider" 
+                      required 
+                      minlength="0"
+                      placeholder="Делитель"
+                      aria-label="resultDivider">
+            </md-input-container>
+        </div>
+    </section>
+    
+</md-content>
+
